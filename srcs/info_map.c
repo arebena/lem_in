@@ -6,7 +6,7 @@
 /*   By: arebena <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/10 16:09:11 by arebena           #+#    #+#             */
-/*   Updated: 2015/11/19 16:29:38 by arebena          ###   ########.fr       */
+/*   Updated: 2015/11/21 02:17:06 by arebena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ char	**matrix_init(t_lem *lem)
 		ft_bzero(n_matrix[e], i);
 		n_matrix[e][i] = -1;
 	}
+	lem->mlen = e;
+	lem->m_esc = ft_strmcat(ft_strmcat(ft_strdup("\033["), ft_itoa(e)), "A");
 	return (n_matrix);
 }
 
