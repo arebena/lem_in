@@ -106,5 +106,5 @@ char	map_anthill(t_lem *lem)
 		if (ret == OFF || m_ret < OFF)
 			return (m_ret);
 	}
-	exit(-1);
+	exit(ERROR);
 }

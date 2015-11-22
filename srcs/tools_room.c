@@ -22,6 +22,7 @@ char	*get_name(char *line)
 		i++;
 	name = (char *)malloc(sizeof(char) * (i + 1));
 	ft_memcpy(name, line, i);
+	name[i] = 0;
 	return (name);
 }
 
@@ -53,7 +54,7 @@ int		room_by_name(t_lem *lem, char *name)
 	i = -1;
 	tmp = ROOMS;
 	while (tmp[++i])
-		if (!(ft_strcmp(name, tmp[i])))
+		if (ft_strcmp(name, tmp[i]) == 0)
 			return (i);
 	return (-1);
 }

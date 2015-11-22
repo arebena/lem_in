@@ -29,12 +29,12 @@ void	matrix_show(char **matrix, int stase, int room, int way)
 	char	str2[20] = "\033[35mX\033[0m";
 
 	i = -1;
-	e = -1;
-	if (stase)
-		while (++e != stase)
-			ft_putstr("================================\n");
 	while (e = -1, matrix[++i])
 	{
+		if (stase)
+			while (++e != stase)
+				ft_putstr("| ");
+		e = -1;
 		while (matrix[i][++e] != -1)
 		{
 			str[8] = matrix[i][e] + 48;
@@ -58,8 +58,10 @@ void	matrix_show(char **matrix, int stase, int room, int way)
 
 void	get_options(char *opt, t_lem *lem)
 {
-	ft_putendl(opt);
-	(void)lem;
+	if (ft_strchr(opt, 'm'))
+		lem->opt.mx = ON;
+	if (ft_strchr(opt, 'w'))
+		lem->opt.gway = ON;
 }
 
 void	check_options(char **opt, t_lem *lem)
@@ -75,16 +77,21 @@ void	check_options(char **opt, t_lem *lem)
 void	exit_buff(int *buff, int stase)
 {
 	int		i;
-	char	str[20] = "\033[32mX\033[0m";
+	char	str[80] = "\033[32m";
+	
 
 	i = 0;
 	if (stase)
 		while (++i != stase)
 			ft_putstr("| ");
 	i = -1;
+	ft_putstr("\033[1;32;44m \033[0m");
 	while (buff[++i] != -1)
 	{
-		str[5] = buff[i] + 48;
+		str[0] = 0;
+		ft_strcat(str, "\033[1;32;44m");
+		ft_strcat(str, ft_itoa(buff[i]));
+		ft_strcat(str, "\033[0m");
 		if (!stase)
 			ft_putnbr(buff[i]);
 		else
@@ -92,7 +99,7 @@ void	exit_buff(int *buff, int stase)
 			ft_putstr(str);
 //			buff[1] = -1;
 		}
-		ft_putchar(' ');
+		ft_putstr("\033[1;32;44m \033[0m");
 	}
 	ft_putchar('\n');
 //	exit(0);
@@ -111,47 +118,65 @@ void	mark(t_lem *lem, int room, char flag)
 		}
 }
 
+int		*new_buffer(int len)
+{
+	int		*buff;
+	
+	buff = (int *)malloc(sizeof(int) * len);
+	buff[0] = 1;
+	buff[1] = -1;
+	return (buff);
+}
+
 void	matrix_run(t_lem *lem, int *buff, int room, int turn)
 {
 	int		i;
-
+	int		*n_buff;
+	
 	i = -1;
 	if (!room)
 	{
 //		ft_putendl("IN");
 		lem->w_flag++;
 		lem->ways++;
-		exit_buff(buff, lem->w_flag);
+		if (lem->opt.gway)
+			exit_buff(buff, lem->w_flag);
 		mark(lem, 1, -1);
-//		matrix_show(lem->matrix, lem->w_flag);
-		matrix_run(lem, buff, 1, 1);
+//		matrix_show(lem->matrix, lem->w_flag, room, i);
+		n_buff = new_buffer(lem->mlen);
+		matrix_run(lem, n_buff, 1, 1);
+		free(n_buff);
 		mark(lem, 1, 1);
-//		if (lem->w_flag == 1)
-//			ft_putendl("-------------------");
+		if (lem->w_flag == 1)
+			ft_putendl("======================================");
+		else
+			ft_putendl("--------------------------------------");
 		lem->w_flag--;
 //		ft_putendl("OUT");
-//		matrix_show(lem->matrix, lem->w_flag);
+		if (lem->opt.mx)
+			matrix_show(lem->matrix, lem->w_flag, room, i);
 	}
 	else
 		while (++i < lem->mlen)
 		{
-			ft_putstr("############# [ ");
-				ft_putnbr(room);
-				ft_putstr(" : ");
-				ft_putnbr(i);
-				ft_putstr(" ] ################\n");
-				exit_buff(buff, 0);
-				matrix_show(lem->matrix, lem->w_flag, room, i);
-			if (lem->matrix[room][i] == 1)
+//			buff[turn - 1] = room;
+			buff[turn] = i;
+			buff[turn + 1] = -1;
+/*			ft_putstr("############# [ ");
+			ft_putnbr(room);
+			ft_putstr(" : ");
+			ft_putnbr(i);
+			ft_putstr(" ] ################\n");
+			exit_buff(buff, 0);
+			matrix_show(lem->matrix, lem->w_flag, room, i);
+*/			if (lem->matrix[room][i] == 1)
 			{
 				
-				buff[turn] = i;
-				buff[turn + 1] = -1;
 				//	matrix_show(lem->matrix, 0);
 				//ft_putstr("------------------------------\n");
 				mark(lem, room, 1);
 				//			matrix_show(lem->matrix, lem->w_flag);
-				//exit_buff(buff, 0);
+//				exit_buff(buff, 0);
 				matrix_run(lem, buff, i, turn + 1);
 				mark(lem, room, -1);
 			}
@@ -163,19 +188,21 @@ int		main(int ac, char **av)
 	t_lem	lem;
 	int		*buff;
 
-	lem.ways = 0;
-	lem.w_flag = 0;
+	lem.ways = ON;
+	lem.w_flag = OFF;
+	lem.opt.mx = OFF;
+	lem.opt.gway = OFF;
 	lem.rooms = (char **)malloc(sizeof(char *) * 3);
+	lem.rooms[0] = ft_strdup("void");
+	lem.rooms[1] = ft_strdup("void");
 	lem.rooms[2] = NULL;
 	if (map_anthill(&lem) == ERROR)
 		puterror(1);
 	if (ac > 1)
 		check_options(av, &lem);
 //	matrix_show(lem.matrix);
-	buff = (int *)malloc(sizeof(int) * lem.mlen);
-	buff[0] = 1;
-	buff[1] = -1;
-//	matrix_show(lem.matrix, 0);
+	buff = new_buffer(lem.mlen);
+//	matrix_show(lem.matrix, 0, 1, 1);
 	matrix_run(&lem, buff, 1, 1);
 	printf("\nThere is %d possible ways...\n", lem.ways);
 //	int i = -1;

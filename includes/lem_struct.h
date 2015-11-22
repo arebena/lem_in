@@ -24,12 +24,14 @@
 
 typedef struct		s_opt
 {
-	char			mtrx;
+	char			mx;
+	char			gway;
 	char			sall;
 }					t_opt;
 
 typedef struct		s_lem
 {
+	t_opt			opt;
 	unsigned int	lems;
 	char			order_flag;
 	char			**rooms;

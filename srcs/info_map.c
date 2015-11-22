@@ -12,6 +12,8 @@
 
 #include "../includes/lem_in.h"
 
+#include <stdio.h>
+
 void	insert_row(char ***room, char *content, int spot)
 {
 	int			i;
@@ -20,7 +22,10 @@ void	insert_row(char ***room, char *content, int spot)
 
 	i = -1;
 	if (spot >= 0)
+	{
+		free((*room)[spot]);
 		(*room)[spot] = ft_strdup(content);
+	}
 	else
 	{
 		tmp = (char **)malloc(sizeof(char *) * (id + 2));
