@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem_in.h"
+#include "lem_in.h"
 
 #include <stdio.h>
 
@@ -19,41 +19,6 @@ void	puterror(int ecode)
 	ft_putendl("ERROR");
 	exit(-1);
 	(void)ecode;
-}
-
-void	matrix_show(char **matrix, int stase, int room, int way)
-{
-	int		i;
-	int		e;
-	char	str[20] = "\033[37;41mX\033[0m";
-	char	str2[20] = "\033[35mX\033[0m";
-
-	i = -1;
-	while (e = -1, matrix[++i])
-	{
-		if (stase)
-			while (++e != stase)
-				ft_putstr("| ");
-		e = -1;
-		while (matrix[i][++e] != -1)
-		{
-			str[8] = matrix[i][e] + 48;
-			str2[5] = matrix[i][e] + 48;
-			if (e > 0)
-				ft_putchar(' ');
-			if (i == room && way == e)
-				ft_putstr(str);
-			else if (i == e)
-				ft_putstr((matrix[i][e]) ? "\033[31m1\033[0m" : "\033[31m0\033[0m");
-			else if (matrix[i][e] < 0)
-				ft_putstr("\033[34mO\033[0m");
-			else if (matrix[i][e] > 1)
-				ft_putstr(str2);
-			else
-				ft_putstr((matrix[i][e]) ? "\033[32m1\033[0m" : "\033[37m0\033[0m");
-		}
-		ft_putchar('\n');
-	}
 }
 
 void	get_options(char *opt, t_lem *lem)
@@ -74,50 +39,6 @@ void	check_options(char **opt, t_lem *lem)
 			get_options(&opt[i][1], lem);
 }
 
-void	exit_buff(int *buff, int stase)
-{
-	int		i;
-	char	str[80] = "\033[32m";
-	
-
-	i = 0;
-	if (stase)
-		while (++i != stase)
-			ft_putstr("| ");
-	i = -1;
-	ft_putstr("\033[1;32;44m \033[0m");
-	while (buff[++i] != -1)
-	{
-		str[0] = 0;
-		ft_strcat(str, "\033[1;32;44m");
-		ft_strcat(str, ft_itoa(buff[i]));
-		ft_strcat(str, "\033[0m");
-		if (!stase)
-			ft_putnbr(buff[i]);
-		else
-		{
-			ft_putstr(str);
-//			buff[1] = -1;
-		}
-		ft_putstr("\033[1;32;44m \033[0m");
-	}
-	ft_putchar('\n');
-//	exit(0);
-}
-
-void	mark(t_lem *lem, int room, char flag)
-{
-	int		i;
-
-	i = -1;
-	while (lem->matrix[room][++i] != -1)
-		if (lem->matrix[room][i])
-		{
-			lem->matrix[room][i] += flag;
-			lem->matrix[i][room] += flag;
-		}
-}
-
 int		*new_buffer(int len)
 {
 	int		*buff;
@@ -128,59 +49,190 @@ int		*new_buffer(int len)
 	return (buff);
 }
 
-void	matrix_run(t_lem *lem, int *buff, int room, int turn)
+void	show_way(t_way *way)
 {
+	t_way	*tmp;
+	int		stase = 1;
 	int		i;
-	int		*n_buff;
+	int		*buff;
+	char	str[80] = "\033[32m";
+	char	*itmp;
 	
-	i = -1;
-	if (!room)
+	tmp = way;
+	while (tmp)
 	{
-//		ft_putendl("IN");
-		lem->w_flag++;
-		lem->ways++;
-		if (lem->opt.gway)
-			exit_buff(buff, lem->w_flag);
-		mark(lem, 1, -1);
-//		matrix_show(lem->matrix, lem->w_flag, room, i);
-		n_buff = new_buffer(lem->mlen);
-		matrix_run(lem, n_buff, 1, 1);
-		free(n_buff);
-		mark(lem, 1, 1);
-		if (lem->w_flag == 1)
-			ft_putendl("======================================");
-		else
-			ft_putendl("--------------------------------------");
-		lem->w_flag--;
-//		ft_putendl("OUT");
-		if (lem->opt.mx)
-			matrix_show(lem->matrix, lem->w_flag, room, i);
-	}
-	else
-		while (++i < lem->mlen)
+		i = 0;
+		if (stase)
+			while (++i != stase)
+				ft_putstr("|");
+		i = -1;
+		ft_putstr("\033[1;30;46m \033[0m");
+		buff = tmp->way;
+		while (buff[++i] != -1)
 		{
-//			buff[turn - 1] = room;
-			buff[turn] = i;
-			buff[turn + 1] = -1;
-/*			ft_putstr("############# [ ");
-			ft_putnbr(room);
-			ft_putstr(" : ");
-			ft_putnbr(i);
-			ft_putstr(" ] ################\n");
-			exit_buff(buff, 0);
-			matrix_show(lem->matrix, lem->w_flag, room, i);
-*/			if (lem->matrix[room][i] == 1)
-			{
-				
-				//	matrix_show(lem->matrix, 0);
-				//ft_putstr("------------------------------\n");
-				mark(lem, room, 1);
-				//			matrix_show(lem->matrix, lem->w_flag);
-//				exit_buff(buff, 0);
-				matrix_run(lem, buff, i, turn + 1);
-				mark(lem, room, -1);
-			}
+			str[0] = 0;
+			itmp = ft_itoa(buff[i]);
+			ft_strcat(str, "\033[1;30;46m");
+			ft_strcat(str, itmp);
+			ft_strcat(str, "\033[0m");
+			if (!stase)
+				ft_putnbr(buff[i]);
+			else
+				ft_putstr(str);
+			free(itmp);
+			ft_putstr("\033[1;30;46m \033[0m");
 		}
+		ft_putstr(" - ");
+		ft_putnbr(tmp->len);
+		ft_putstr(" - ");
+		ft_putnbr(tmp->lem_on);
+		ft_putchar('\n');
+		tmp = tmp->next;
+		stase++;
+	}
+}
+
+int		*way_dup(int *way, int len, int flag)
+{
+	int		*n_way;
+	int		i;
+
+	i = flag - 1;
+	n_way = (int *)malloc(sizeof(int) * (len + ((flag) ? 0 : 1)));
+	while (way[++i] != -1)
+		n_way[i - flag] = way[i];
+	n_way[len - flag] = -1;
+	return (n_way);
+}
+
+t_way	*new_way(int *buff, int turn, int flag);
+
+t_way	*big_way_dup(t_way *way)
+{
+	t_way	*n_way;
+	t_way	*n_tmp;
+	t_way	*tmp;
+
+	n_way = new_way(way->way, way->len, OFF);
+	tmp = way->next;
+	n_tmp = n_way;
+	while (tmp)
+	{
+		n_tmp->next = new_way(tmp->way, tmp->len, OFF);
+		n_tmp = n_tmp->next;
+		tmp = tmp->next;
+	}
+	return (n_way);
+}
+
+void	way_modif(t_way *way, int *buff, int turn)
+{
+	t_way	*tmp;
+	t_way	*next;
+
+	tmp = way->next;
+	free(way->way);
+	way->way = way_dup(buff, turn, ON);
+	way->len = turn - 1;
+	way->next = NULL;
+	while (tmp)
+	{
+		next = tmp->next;
+		free(tmp->way);
+		free(tmp);
+		tmp = next;
+	}
+}
+
+int		ft_ceil(float n)
+{
+	return ((n-(int)(n)) > 0 ? (int)(n+1) : (int)(n));
+}
+
+t_way	*new_way(int *buff, int turn, int flag)
+{
+	t_way	*n_way;
+
+	n_way = (t_way *)malloc(sizeof(t_way));
+	n_way->way = way_dup(buff, turn, flag);
+	n_way->len = turn - flag;
+	n_way->next = NULL;
+	return (n_way);
+}
+
+void	new_shorter(t_lem *lem, int n_size)
+{
+	t_way	*tmp;
+	t_way	*next;
+	
+	if (lem->shorter)
+	{
+		tmp = lem->shorter;
+		while (tmp)
+		{
+			next = tmp->next;
+			free(tmp->way);
+			free(tmp);
+			tmp = next;
+		}
+		lem->shorter = NULL;
+	}
+	lem->shorter = big_way_dup(lem->way);
+	lem->short_size = n_size;
+}
+
+void	way_check(t_lem *lem)
+{
+	t_way	*tmp;
+	char	*sol;
+	int		n;
+	int		e;
+	int		s;
+
+	tmp = lem->way;
+	n = e = 0;
+	while (tmp)
+	{
+		e += tmp->len - 1;
+		n++;
+		tmp = tmp->next;
+	}
+	s = ft_ceil((e + lem->lems) / (float)n);
+	if (s < lem->short_size || lem->short_size < 0)
+		new_shorter(lem, s);
+	if (lem->opt.gway)
+	{
+		sol = ft_itoa(s);
+		ft_putstr(" - \033[1;30;46m");
+		ft_putstr(sol);
+		ft_putstr("\033[0m\n");
+		free(sol);
+	}
+}
+
+void	way_upload(t_lem *lem, int *buff, int stase, int turn)
+{
+	t_way	*tmp;
+	t_way	*back;
+	int		i;
+
+	i = 0;
+	tmp = lem->way;
+	if(!lem->way && stase == 1)
+		lem->way = new_way(buff, turn, ON);
+	else
+	{
+		while (++i != stase)
+		{
+			back = tmp;
+			tmp = tmp->next;
+		}
+		if (tmp)
+			way_modif(tmp, buff, turn);
+		else
+			back->next = new_way(buff, turn, ON);
+	}
+	way_check(lem);
 }
 
 int		main(int ac, char **av)
@@ -188,10 +240,14 @@ int		main(int ac, char **av)
 	t_lem	lem;
 	int		*buff;
 
-	lem.ways = ON;
 	lem.w_flag = OFF;
+	lem.s_flag = OFF;
 	lem.opt.mx = OFF;
 	lem.opt.gway = OFF;
+	lem.way = NULL;
+	lem.shorter = NULL;
+	lem.lem_in = NULL;
+	lem.short_size = -1;
 	lem.rooms = (char **)malloc(sizeof(char *) * 3);
 	lem.rooms[0] = ft_strdup("void");
 	lem.rooms[1] = ft_strdup("void");
@@ -200,14 +256,9 @@ int		main(int ac, char **av)
 		puterror(1);
 	if (ac > 1)
 		check_options(av, &lem);
-//	matrix_show(lem.matrix);
 	buff = new_buffer(lem.mlen);
-//	matrix_show(lem.matrix, 0, 1, 1);
+	lem.order_flag = 0;
 	matrix_run(&lem, buff, 1, 1);
-	printf("\nThere is %d possible ways...\n", lem.ways);
-//	int i = -1;
-//	while (lem.rooms[++i])
-//		printf("rooms[%d] = %s\n", i, lem.rooms[i]);
-//	printf("lems = %u\n", lem.lems);
+	print_result(&lem);
 	return (0);
 }

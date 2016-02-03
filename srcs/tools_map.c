@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem_in.h"
+#include "lem_in.h"
 
 char	ft_isnbrs(char *str)
 {
@@ -100,8 +100,7 @@ char	map_anthill(t_lem *lem)
 	while ((ret = get_next_line(STDIN, &line)) != ERROR)
 	{
 		m_ret = get_map_info(lem, line, &stat);
-//		if (m_ret == ON)
-//			ft_putendl(line);
+		ft_putendl(line);
 		free(line);
 		if (ret == OFF || m_ret < OFF)
 			return (m_ret);

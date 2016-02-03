@@ -13,11 +13,17 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
-# include "../srcs/Libft/srcs/libft.h"
-# include "../srcs/GNL/get_next_line.h"
+# include "libft.h"
+# include "get_next_line.h"
 # include "lem_struct.h"
 
-
+int     *new_buffer(int len);
+void    way_upload(t_lem *lem, int *buff, int stase, int turn);
+void    matrix_run(t_lem *lem, int *buff, int room, int turn);
+void    show_way(t_way *way);
+t_lemin *lem_del(t_lem *lem, int id);
+void    print_result(t_lem *lem);
+void    lem_through(t_lem *lem);
 int		*str_to_tab(char *str, char c);
 char	map_anthill(t_lem *lem);
 char	islink(char *line);

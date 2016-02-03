@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem_in.h"
+#include "lem_in.h"
 
 #include <stdio.h>
 
@@ -58,8 +58,6 @@ char	check_for_room(t_lem *lem, char *line, char *stat)
 	return (ON);
 }
 
-#include <stdio.h>
-
 char	**matrix_init(t_lem *lem)
 {
 	int		i;
@@ -81,7 +79,7 @@ char	**matrix_init(t_lem *lem)
 		n_matrix[e][i] = -1;
 	}
 	lem->mlen = e;
-	lem->m_esc = ft_strmcat(ft_strmcat(ft_strdup("\033["), ft_itoa(e)), "A");
+	lem->m_esc = ft_strmcat(ft_strmcat(ft_strdup("\033["), ft_itoa(e + 1)), "A");
 	return (n_matrix);
 }
 
