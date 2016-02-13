@@ -12,6 +12,8 @@
 
 #include "lem_in.h"
 
+#include "stdio.h"
+
 char	ft_isnbrs(char *str)
 {
 	int		i;
@@ -34,13 +36,19 @@ char	check_order(t_lem *lem, char *line)
 {
 	char	ret;
 
-	ret = 0;
+	ret = ON;
 	if (line[1] == '#')
 	{
 		if (!ft_strcmp(&(line[2]), "start"))
+		{
 			OFLAG = 2;
+			lem->in_n_out++;
+		}
 		else if (!ft_strcmp(&(line[2]), "end"))
+		{
 			OFLAG = 1;
+			lem->in_n_out++;
+		}
 	}
 	return (ret);
 }
@@ -97,12 +105,15 @@ char	map_anthill(t_lem *lem)
 
 	stat = 0;
 	line = NULL;
+	lem->order_flag = OFF;
 	while ((ret = get_next_line(STDIN, &line)) != ERROR)
 	{
 		m_ret = get_map_info(lem, line, &stat);
-		ft_putendl(line);
-		free(line);
-		if (ret == OFF || m_ret < OFF)
+		if (m_ret > OFF)
+			lem->anthill = ft_strmcat(lem->anthill, ft_strmcat(line, "\n"));
+		else
+			free(line);
+		if (ret == OFF || m_ret <= OFF)
 			return (m_ret);
 	}
 	exit(ERROR);

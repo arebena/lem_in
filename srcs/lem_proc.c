@@ -96,6 +96,7 @@ t_lemin *lem_del(t_lem *lem, int id)
 
 void    print_result(t_lem *lem)
 {
+	ft_putstr(lem->anthill);
 	sort_way(lem->shorter);
 	lem_on_way(lem);
 	if (lem->opt.gway)

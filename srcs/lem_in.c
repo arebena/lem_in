@@ -12,8 +12,6 @@
 
 #include "lem_in.h"
 
-#include <stdio.h>
-
 void	puterror(int ecode)
 {
 	ft_putendl("ERROR");
@@ -235,30 +233,43 @@ void	way_upload(t_lem *lem, int *buff, int stase, int turn)
 	way_check(lem);
 }
 
+void	lem_init(t_lem *lem)
+{
+	lem->w_flag = OFF;
+	lem->s_flag = OFF;
+	lem->opt.mx = OFF;
+	lem->opt.gway = OFF;
+	lem->in_n_out = 0;
+	lem->mlen = OFF;
+	lem->anthill = NULL;
+	lem->way = NULL;
+	lem->shorter = NULL;
+	lem->lem_in = NULL;
+	lem->short_size = -1;
+	lem->rooms = (char **)malloc(sizeof(char *) * 3);
+	lem->rooms[0] = ft_strdup("void");
+	lem->rooms[1] = ft_strdup("void");
+	lem->rooms[2] = NULL;
+}
+
 int		main(int ac, char **av)
 {
 	t_lem	lem;
 	int		*buff;
 
-	lem.w_flag = OFF;
-	lem.s_flag = OFF;
-	lem.opt.mx = OFF;
-	lem.opt.gway = OFF;
-	lem.way = NULL;
-	lem.shorter = NULL;
-	lem.lem_in = NULL;
-	lem.short_size = -1;
-	lem.rooms = (char **)malloc(sizeof(char *) * 3);
-	lem.rooms[0] = ft_strdup("void");
-	lem.rooms[1] = ft_strdup("void");
-	lem.rooms[2] = NULL;
-	if (map_anthill(&lem) == ERROR)
+	lem_init(&lem);
+	if (map_anthill(&lem) == ERROR || lem.in_n_out < 2)
 		puterror(1);
 	if (ac > 1)
 		check_options(av, &lem);
-	buff = new_buffer(lem.mlen);
-	lem.order_flag = 0;
+	if (lem.mlen > 0)
+		buff = new_buffer(lem.mlen);
+	else
+		puterror(1);
 	matrix_run(&lem, buff, 1, 1);
-	print_result(&lem);
+	if (lem.shorter)
+		print_result(&lem);
+	else
+		puterror(1);
 	return (0);
 }

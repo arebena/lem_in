@@ -46,13 +46,9 @@ char	check_for_room(t_lem *lem, char *line, char *stat)
 	if (!isroom(line))
 		return (check_for_link(lem, line, stat));
 	name = get_name(line);
+	insert_row(&ROOMS, name, OFLAG - 1);
 	if (OFLAG)
-	{
-		insert_row(&ROOMS, name, OFLAG - 1);
 		OFLAG = 0;
-	}
-	else
-		insert_row(&ROOMS, name, OFLAG - 1);
 	free(name);
 	(void)stat;
 	return (ON);

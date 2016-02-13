@@ -15,8 +15,8 @@
 
 # define ON 1
 # define OFF 0
-# define STDIN 0
 # define ERROR -1
+# define STDIN 0
 # define OFLAG lem->order_flag
 # define ROOMS lem->rooms
 
@@ -56,8 +56,10 @@ typedef struct		s_lem
 	char			order_flag;
 	char			**rooms;
 	char			**matrix;
+	char			*anthill;
 	char			*m_esc;
 	int				mlen;
+	int				in_n_out;
 	int				w_flag;
 	int				s_flag;
 }					t_lem;
