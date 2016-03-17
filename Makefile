@@ -6,7 +6,7 @@
 #    By: arebena <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/08 22:06:46 by arebena           #+#    #+#              #
-#    Updated: 2015/11/19 14:45:50 by arebena          ###   ########.fr        #
+#    Updated: 2016/03/17 14:48:29 by arebena          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -34,21 +34,20 @@ $(NAME):
 	@echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 	@make --no-print-directory -C $(LIBFT)
 	@echo  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	@echo -ne "Creating LEM_IN Object files..."
+	@echo "Creating LEM_IN Object files...\c"
 	@gcc $(FLG) $(HEADS) -c $(SRCS)
 	@mkdir -p obj
 	@mv $(notdir $(SRCO)) obj
 	@number=1 ; while [[ $$number -le 31 ]] ; do \
-		echo -ne "\b" ; \
+		echo "\b\c" ; \
 		((number = number + 1)) ; \
 	done
 	@echo "Object files successfully compiled	"
-	@echo -ne "Creating LEM_IN..."
+	@echo "Creating LEM_IN..."
 	@gcc $(FLG) -o $(NAME) $(SRCO) $(LIBS)
 	@chmod 755 $(NAME)
-	@mv $(NAME).exe $(NAME)
 	@number=1 ; while [[ $$number -le 18 ]] ; do \
-		echo -ne "\b" ; \
+		echo "\b\c" ; \
 		((number = number + 1)) ; \
 	done
 	@echo  "  ====== LEM_IN created ======"
