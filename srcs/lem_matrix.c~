@@ -106,21 +106,13 @@ void	matrix_valid(t_lem *lem, int *buff, int turn)
 	lem->w_flag--;
 }
 
-void	show_rooms(t_lem *lem);
-
-#include <stdio.h>
-
 void    matrix_run(t_lem *lem, int *buff, int room, int turn)
 {
 	int     i;
 
 	i = -1;
-	if (!room) ft_putendl("!!! VALID !!!");
-	printf("turn -> %d\n", turn);
-	show_rooms(lem);
-	if (!room) {
+	if (!room)
 		matrix_valid(lem, buff, turn);
-	}
 	else
 		while (++i < lem->mlen)
 		{
