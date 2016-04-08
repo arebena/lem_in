@@ -14,9 +14,9 @@ int     lem_process(t_lem *lem, t_lemin **lem_in, t_way *way, int flag)
 	ft_putstr(tmp->name);
 	ft_putchar('-');
 	ft_putstr(ROOMS[way->way[tmp->pos]]);
-	ft_putstr(" [ ");
-    ft_putnbr(way->way[tmp->pos]);
-    ft_putstr(" ]");
+//	ft_putstr(" [ ");
+//	ft_putnbr(way->way[tmp->pos]);
+//	ft_putstr(" ]");
 	if (!way->way[tmp->pos])
 	{
 		*lem_in = lem_del(lem, tmp->id);
@@ -77,9 +77,9 @@ void    add_lem(t_lem *lem, int id, int flag)
 	ft_putstr(name);
 	ft_putchar('-');
 	ft_putstr(ROOMS[way->way[0]]);
-	ft_putstr(" [ ");
-    ft_putnbr(way->way[0]);
-    ft_putstr(" ]");
+//	ft_putstr(" [ ");
+//	ft_putnbr(way->way[0]);
+//	ft_putstr(" ]");
 	id_lem++;
 }
 

@@ -115,9 +115,9 @@ void    matrix_run(t_lem *lem, int *buff, int room, int turn)
 	int     i;
 
 	i = -1;
-	if (!room) ft_putendl("!!! VALID !!!");
-	printf("turn -> %d\n", turn);
-	show_rooms(lem);
+//	if (!room) ft_putendl("!!! VALID !!!");
+//	printf("turn -> %d\n", turn);
+//	show_rooms(lem);
 	if (!room) {
 		matrix_valid(lem, buff, turn);
 	}
@@ -130,7 +130,7 @@ void    matrix_run(t_lem *lem, int *buff, int room, int turn)
 			{
 				if (lem->order_flag)
 					ft_putstr(lem->m_esc);
-				matrix_show(lem->matrix, lem->w_flag, room, i);
+//				matrix_show(lem->matrix, lem->w_flag, room, i);
 				lem->order_flag = 1;
 			}
 			if (lem->matrix[room][i] == 1)

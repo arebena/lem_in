@@ -271,18 +271,18 @@ int		main(int ac, char **av)
 	lem_init(&lem);
 	if (map_anthill(&lem) == ERROR || lem.in_n_out < 2)
 		puterror(1);
-	show_rooms(&lem);
+//	show_rooms(&lem);
 	if (ac > 1)
 		check_options(av, &lem);
 	if (lem.mlen > 0)
 		buff = new_buffer(lem.mlen);
 	else
 		puterror(1);
-	show_rooms(&lem);
-	ft_putendl("##############");
+//	show_rooms(&lem);
+//	ft_putendl("##############");
 	matrix_run(&lem, buff, 1, 1);
-	ft_putendl("##############");
-	show_rooms(&lem);
+//	ft_putendl("##############");
+//	show_rooms(&lem);
 	if (lem.shorter)
 		print_result(&lem);
 	else
